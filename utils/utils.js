@@ -1,3 +1,4 @@
+const { UnauthorizedError } = require('../errors/index');
 const attachCookiesToResponse = ({ res, token }) => {
   const oneDay = 1000 * 60 * 60 * 24;
   res.cookie('token', token, {
@@ -7,4 +8,12 @@ const attachCookiesToResponse = ({ res, token }) => {
     signed: true,
   });
 };
-module.exports = { attachCookiesToResponse };
+
+const checkPermission = (requestUser, resourceUserId) => {
+  console.log(requestUser.role);
+  console.log(resourceUserId);
+  if (requestUser.role === 'admin') return;
+  if (requestUser === resourceUserId) return;
+  throw new UnauthorizedError('not authorized to access');
+};
+module.exports = { attachCookiesToResponse, checkPermission };

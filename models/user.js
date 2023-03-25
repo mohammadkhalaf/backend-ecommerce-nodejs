@@ -40,7 +40,7 @@ userSchema.methods.compare = async function (pw) {
 };
 userSchema.methods.createToken = function () {
   const token = jwt.sign(
-    { userId: this._id, name: this.name },
+    { userId: this._id, name: this.name, role: this.role },
     process.env.SECRET,
     { expiresIn: '1d' },
   );
