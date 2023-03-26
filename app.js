@@ -5,8 +5,9 @@ const express = require('express');
 const port = process.env.PORT || 5000;
 const app = express();
 const connectDB = require('./db/db');
-const authRoute = require('./routes/authRoutes');
-const userRoute = require('./routes/userRoutes');
+const authRouter = require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes');
+const productRouter = require('./routes/productRoutes');
 
 //middleware
 const cookieParser = require('cookie-parser');
@@ -22,8 +23,9 @@ app.get('/api/v1/', (req, res) => {
   console.log('Cookies: ', req.signedCookies);
   res.send('hello ');
 });
-app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/user', userRoute);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/products', productRouter);
 
 app.use(notFound);
 app.use(errorHandler);
