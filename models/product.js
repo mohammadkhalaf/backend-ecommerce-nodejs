@@ -19,9 +19,9 @@ const ProductSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: '/uploads/image.jpeg',
+      default: '/uploads/couch.jpeg',
     },
-    category: {
+    category: { 
       type: String,
       required: [true, 'Please provide product category'],
       enum: ['office', 'kitchen', 'bedroom'],
@@ -36,6 +36,7 @@ const ProductSchema = new mongoose.Schema(
     },
     colors: {
       type: [String],
+      default: ['#222'],
       required: true,
     },
     featured: {

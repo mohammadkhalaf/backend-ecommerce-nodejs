@@ -14,9 +14,12 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler');
+const fileUpload = require('express-fileupload');
 app.use(morgan('tiny'));
 app.use(cookieParser(process.env.SECRET));
 app.use(express.json());
+app.use(fileUpload());
+app.use(express.static('./public'));
 
 //routes
 app.get('/api/v1/', (req, res) => {
