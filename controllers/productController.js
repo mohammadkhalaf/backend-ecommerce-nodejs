@@ -6,6 +6,7 @@ const {
   UnauthorizedError,
   NotFoundError,
 } = require('../errors/index');
+const Review = require('../models/review');
 const path = require('path');
 const createProduct = async (req, res) => {
   req.body.user = req.user.userId;
@@ -19,7 +20,7 @@ const getAllProducts = async (req, res) => {
 };
 const getSingleProduct = async (req, res) => {
   const { id } = req.params;
-  const product = await Product.findById({ _id: id });
+  const product = await Product.findById({ _id: id }).populate('review');
   if (!product) {
     throw new NotFoundError('product is not found');
   }
@@ -32,7 +33,12 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError('product is not found');
   }
-  product = await Product.findByIdAndDelete({ _id: id });
+  product = await Product.findOneAndDelete({ _id: id });
+
+  const review = await Review.find({ product: id });
+  if (review) {
+    await Review.deleteMany({ product: id });
+  }
 
   res.status(StatusCodes.OK).json({ msg: 'Product has been deleted' });
 };

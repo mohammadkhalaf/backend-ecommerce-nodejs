@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: '/uploads/couch.jpeg',
     },
-    category: { 
+    category: {
       type: String,
       required: [true, 'Please provide product category'],
       enum: ['office', 'kitchen', 'bedroom'],
@@ -64,7 +64,15 @@ const ProductSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+ProductSchema.virtual('review', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'product',
+  justOne: false,
+});
 
 module.exports = mongoose.model('Product', ProductSchema);
